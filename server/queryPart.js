@@ -31,9 +31,9 @@ const getKeyFilesInDir = (dir) => {
 
 /**
  * @param {string} funcName fabric function name 
- * @param {[]string} funcParas fabric function parameters
+ * @param {string[]} funcParas fabric function parameters
  */
-module.exports = function myInvoke(funcName, funcParas) {
+module.exports = function myQuery(funcName, funcParas) {
     var channel = {};
     var client = null;
 
@@ -83,27 +83,23 @@ module.exports = function myInvoke(funcName, funcParas) {
                 fcn: funcName,
                 args: funcParas
             };
+            console.log('\nrequest is emitting to FABRIC: ');
+            console.log(request);
+            console.log('\n');
             return channel.queryByChaincode(request);
         })
         .then((query_responses) => {
             console.log("returned from query");
             if (!query_responses.length) {
                 console.log("No payloads were returned from query");
-            } else {
+            } 
+            else {
                 console.log("Query result count = ", query_responses.length)
             }
             if (query_responses[0] instanceof Error) {
                 console.error("error from query = ", query_responses[0]);
             }
-            console.log("Response is ", query_responses[0].toString());
-            // console.log("#########################################"); 
-            // console.log("Response is ", query_responses[0]); 
-            console.log("#########################################");
-            console.log("Response is ", JSON.parse(query_responses[0].toString()).paperId);
-            console.log("#########################################");
+            //console.log("Response is ", query_responses[0].toString());
             return query_responses[0].toString();
-        })
-       ;
-
-
+        });
 }
